@@ -2,7 +2,6 @@ importScripts(
   "./utils.js",
   "./classes/complex.js",
   "./classes/fractal.js",
-  "./classes/fractal-type.js",
   "./classes/frame.js",
   "./classes/gradient.js",
   "./classes/image-settings.js",

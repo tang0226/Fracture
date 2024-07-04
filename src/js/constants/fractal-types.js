@@ -1,5 +1,5 @@
 const FRACTAL_TYPES = {
-  mandelbrot: new FractalType({
+  mandelbrot: {
     id: "mandelbrot",
     meta: {
       iterationType: "mandelbrot",
@@ -11,9 +11,9 @@ const FRACTAL_TYPES = {
         2 * z[0] * z[1] + c[1]
       ];
     },
-  }),
+  },
 
-  julia: new FractalType({
+  julia: {
     id: "julia",
     meta: {
       iterationType: "julia",
@@ -26,9 +26,9 @@ const FRACTAL_TYPES = {
         2 * z[0] * z[1] + params.c[1]
       ];
     },
-  }),
+  },
 
-  multibrot: new FractalType({
+  multibrot: {
     id: "multibrot",
     meta: {
       iterationType: "mandelbrot",
@@ -41,9 +41,9 @@ const FRACTAL_TYPES = {
         c,
       )
     }
-  }),
+  },
 
-  multijulia: new FractalType({
+  multijulia: {
     id: "multijulia",
     meta: {
       iterationType: "julia",
@@ -57,9 +57,9 @@ const FRACTAL_TYPES = {
         params.c
       );
     }
-  }),
+  },
 
-  burningShip: new FractalType({
+  burningShip: {
     id: "burningShip",
     meta: {
       iterationType: "mandelbrot",
@@ -71,9 +71,9 @@ const FRACTAL_TYPES = {
         Math.abs(2 * z[0] * z[1]) + c[1]
       ];
     },
-  }),
+  },
 
-  burningShipJulia: new FractalType({
+  burningShipJulia: {
     id: "burningShipJulia",
     meta: {
       iterationType: "julia",
@@ -86,5 +86,5 @@ const FRACTAL_TYPES = {
         Math.abs(2 * z[0] * z[1]) + params.c[1]
       ];
     },
-  }),
+  },
 };
