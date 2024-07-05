@@ -1066,7 +1066,9 @@ var currSettings = DEFAULTS.imageSettings.copy(),
 
 function pushSettings(newSettings) {
   lastSettings = currSettings.copy();
-  currSettings = newSettings.copy();
+
+  // new settings will be a raw object
+  currSettings = new ImageSettings(newSettings);
 }
 
 function render(imageSettings, _pushSettings = true) {
