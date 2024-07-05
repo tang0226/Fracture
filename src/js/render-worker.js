@@ -1,12 +1,36 @@
 importScripts(
   "./utils.js",
   "./classes/complex.js",
-  "./classes/fractal.js",
-  "./classes/frame.js",
-  "./classes/gradient.js",
-  "./classes/image-settings.js",
   "./constants/fractal-types.js",
 );
+
+
+// Basically a copy of getColorAt() from the Gradient class
+function applyGradient(grad, pos) {
+  let l = grad.points.length;
+  
+  // Binary search
+  let max = l - 1;
+  let min = 0;
+  while (true) {
+    let avg = (min + max) / 2;
+    if (pos >= grad.points[Math.floor(avg)].pos) {
+      min = Math.floor(avg);
+    }
+    else if (pos <= grad.points[Math.ceil(avg)].pos) {
+      max = Math.ceil(avg);
+    }
+    if (max - min == 1) {
+      return grad.points[min].color.map((c, i) =>
+        c + (grad.points[max].color[i] - c) * (
+          (pos - grad.points[min].pos) /
+          (grad.points[max].pos - grad.points[min].pos)
+        )
+      );
+    }
+  }
+}
+
 
 onmessage = function(event) {
   let data = event.data;
@@ -14,13 +38,21 @@ onmessage = function(event) {
     let startTime = new Date();
     let lastUpdateTime = new Date();
 
-    let settings = ImageSettings.reconstruct(data.settings);
+    let settings = data.settings;
 
-    let iterate = settings.fractal.type.meta.iterationType == "mandelbrot" ?
-      Fractal.iterateMandelbrot : Fractal.iterateJulia;
+    let complexIter = settings.frame.reWidth / settings.width;
+
+    let fractalType = FRACTAL_TYPES[settings.fractal.type.id];
+    let fracParams = settings.fractal.params;
+
+    let iterFunc = fractalType.iterFunc;
+    let iterType = fractalType.meta.iterationType;
     
     let iterSettings = {...settings.iterSettings};
-    iterSettings.smoothColoringExp = settings.fractal.params.e || 2;
+    let iters = iterSettings.iters;
+    let er = iterSettings.er;
+    let sc = iterSettings.sc;
+    let scExp = settings.fractal.params.e || 2;
 
     let ipc = settings.gradientSettings.itersPerCycle
 
@@ -30,26 +62,40 @@ onmessage = function(event) {
 
     let i = 0;
     for (let y = 0; y < settings.height; y++) {
-      let im = settings.frame.imMin + y * settings.complexIter;
       for (let x = 0; x < settings.width; x++) {
-        let val = iterate(
-            [
-              settings.frame.reMin + x * settings.complexIter,
-              settings.frame.imMin + y * settings.complexIter
-            ],
-            settings.fractal.iterFunc,
-            iterSettings,
-            settings.fractal.params,
-          );
-        if (val == iterSettings.iters) {
+        let c = [
+          settings.frame.reMin + x * complexIter,
+          settings.frame.imMin + y * complexIter
+        ];
+
+        let z = iterType == "mandelbrot" ? [0, 0] : [c[0], c[1]];
+
+        let n = 0;
+        while (Complex.abs(z) <= er && n < iters) {
+          if (iterType == "mandelbrot") {
+            z = iterFunc(z, c, fracParams);
+          }
+          else {
+            z = iterFunc(z, fracParams);
+          }
+          n++;
+        }
+
+        if (sc && n != iters) {
+          n += 1 - Math.log(Math.log(Complex.abs(z))) / Math.log(scExp);
+        }
+        
+
+        if (n == iters) {
           currChunk[i] = 0;
           currChunk[i + 1] = 0;
           currChunk[i + 2] = 0;
           currChunk[i + 3] = 255;
         }
         else {
-          let col = settings.gradient.getColorAt(
-            (val % ipc) / ipc
+          let col = applyGradient(
+            settings.gradient,
+            (n % ipc) / ipc
           );
           currChunk[i] = col[0];
           currChunk[i + 1] = col[1];

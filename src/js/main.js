@@ -49,9 +49,6 @@ const toolbar = new Element({
 
 const mainCanvas = new Canvas({
   id: "main-canvas",
-  state: {
-    currSettings: DEFAULTS.imageSettings.copy(),
-  },
   init() {
     this.setDim(window.innerWidth - SETTINGS.toolbarWidth, window.innerHeight);
   },
@@ -197,14 +194,15 @@ const renderButton = new Button({
           },
           iterSettings: {
             iters: itersInput.state.iters,
-            escapeRadius: escapeRadiusInput.state.er,
-            smoothColoring: smoothColoringCheckbox.element.checked,
+            er: escapeRadiusInput.state.er,
+            sc: smoothColoringCheckbox.element.checked,
           },
           srcFrame: srcFrame,
           frame: srcFrame.fitToCanvas(mainCanvas.width, mainCanvas.height),
           gradient: gradientInput.state.gradient,
           gradientSettings: { itersPerCycle: itersPerCycleInput.state.ipc},
         };
+
         render(settings);
       }
     },
@@ -1075,8 +1073,8 @@ function render(imageSettings, _pushSettings = true) {
   if (_pushSettings) {
     pushSettings(imageSettings);
   }
-  renderInProgress = true;
 
+  renderInProgress = true;
   renderWorker = new Worker("./js/render-worker.js");
 
   renderWorker.onmessage = function(event) {
