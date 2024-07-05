@@ -24,7 +24,10 @@ const DEFAULTS = {
 DEFAULTS.imageSettings = new ImageSettings({
   width: window.innerWidth - SETTINGS.toolbarWidth,
   height: window.innerHeight,
-  fractal: new Fractal(FRACTAL_TYPES.mandelbrot),
+  fractal: {
+    type: FRACTAL_TYPES.mandelbrot,
+    params: {},
+  },
   iterSettings: {
     iters: DEFAULTS.iters,
     escapeRadius: DEFAULTS.escapeRadius,
@@ -47,7 +50,7 @@ const toolbar = new Element({
 const mainCanvas = new Canvas({
   id: "main-canvas",
   state: {
-    currSettings: ImageSettings.reconstruct(DEFAULTS.imageSettings),
+    currSettings: DEFAULTS.imageSettings.copy(),
   },
   init() {
     this.setDim(window.innerWidth - SETTINGS.toolbarWidth, window.innerHeight);
@@ -165,16 +168,16 @@ const renderButton = new Button({
       }
 
       if (canRender) {
-        let frame;
+        let srcFrame;
 
         // If fractal changed and new frame is queued
         if (queuedFrame) {
-          frame = queuedFrame;
+          srcFrame = queuedFrame;
           queuedFrame = null;
         }
         // Otherwise, stick to current frame
         else {
-          frame = currSettings.srcFrame;
+          srcFrame = currSettings.srcFrame;
         }
 
         let fracParams = {};
@@ -188,16 +191,17 @@ const renderButton = new Button({
         let settings = {
           width: mainCanvas.width,
           height: mainCanvas.height,
-          fractal: new Fractal(
-            FRACTAL_TYPES[fractalDropdown.state.fractalType.id],
-            fracParams,
-          ),
+          fractal: {
+            type: FRACTAL_TYPES[fractalDropdown.state.fractalType.id],
+            params: fracParams,
+          },
           iterSettings: {
             iters: itersInput.state.iters,
             escapeRadius: escapeRadiusInput.state.er,
             smoothColoring: smoothColoringCheckbox.element.checked,
           },
-          srcFrame: frame,
+          srcFrame: srcFrame,
+          frame: srcFrame.fitToCanvas(mainCanvas.width, mainCanvas.height),
           gradient: gradientInput.state.gradient,
           gradientSettings: { itersPerCycle: itersPerCycleInput.state.ipc},
         };
@@ -641,7 +645,7 @@ const gradientMainCanvas = new Canvas({
     this.utils.draw();
   },
   state: {
-    gradient: DEFAULTS.gradient,
+    gradient: DEFAULTS.gradient.copy(),
   },
   utils: {
     draw() {
@@ -865,7 +869,7 @@ const insertColorRightButton = new Button({
     }
   },
 });
-// TODO: UPDATE ALL GRADIENT INPUT SETTING AND STATE UPDATES
+
 const deleteColorButton = new Button({
   id: "delete-color",
   dispStyle: "inline-block",
@@ -1061,8 +1065,8 @@ var currSettings = DEFAULTS.imageSettings.copy(),
   lastSettings, queuedFrame, renderInProgress, renderWorker, renderProgress, renderTime;
 
 function pushSettings(newSettings) {
-  lastSettings = ImageSettings.reconstruct(currSettings);
-  currSettings = ImageSettings.reconstruct(newSettings);
+  lastSettings = currSettings.copy();
+  currSettings = newSettings.copy();
 }
 
 function render(imageSettings, _pushSettings = true) {
