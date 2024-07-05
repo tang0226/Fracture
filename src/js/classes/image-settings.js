@@ -20,7 +20,7 @@ class ImageSettings {
     this.width = params.width;
     this.height = params.height;
 
-    this.fractal = params.fractal.copy();
+    this.fractal = deepCopy(params.fractal);
     this.srcFrame = params.srcFrame.copy();
     this.gradient = params.gradient.copy();
 
