@@ -3,7 +3,7 @@ const FRACTAL_TYPES = {
     id: "mandelbrot",
     meta: {
       iterationType: "mandelbrot",
-      juilaEquivalent: "julia",
+      juliaEquivalent: "julia",
     },
     iterFunc: function(z, c, _params) {
       return [
