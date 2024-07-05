@@ -78,10 +78,12 @@ const controlCanvas = new Canvas({
       }
     },
 
-    mouseUp() {
+    mouseUp(event) {
       this.ctx.clearRect(0, 0, this.width, this.height);
 
       let frame = currSettings.frame;
+
+      // Drag
       if (!(this.state.mouseX == this.state.startDragX &&
         this.state.mouseY == this.state.startDragY)) {
 
@@ -111,7 +113,24 @@ const controlCanvas = new Canvas({
         cancelRender(true);
         render(img);
       }
+
+      // Click
+      else {
+        if (event.ctrlKey) {
+          let settings = currSettings.copy();
+          settings.frame = new Frame(
+            frame.toComplexCoords(this.state.mouseX, this.state.mouseY, this.width, this.height),
+            frame.reWidth, frame.imHeight
+          );
+
+          settings.srcFrame = settings.frame.copy();
+
+          cancelRender(true);
+          render(settings, true);
+        }
+      }
     },
+
     mouseOut() {
       this.ctx.clearRect(0, 0, this.width, this.height);
     },
