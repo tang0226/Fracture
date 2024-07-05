@@ -46,9 +46,4 @@ class Frame {
   copy() {
     return new Frame([...this.center], this.reWidth, this.imHeight);
   }
-
-  // Reconstruct serialized object to restore class methods
-  static reconstruct(frame) {
-    return new Frame([...frame.center], frame.reWidth, frame.imHeight);
-  }
 }

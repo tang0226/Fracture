@@ -139,9 +139,4 @@ class Gradient {
   copy() {
     return new Gradient(this.string);
   }
-  
-  // Reconstruct serialized object to restore class methods
-  static reconstruct(gradient) {
-    return new Gradient(gradient.string);
-  }
 }

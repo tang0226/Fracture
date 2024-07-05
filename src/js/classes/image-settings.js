@@ -16,20 +16,13 @@ IMAGE SETTINGS CLASS: ALL PARAMETERS FOR AN IMAGE OF A FRACTAL
 **/
 
 class ImageSettings {
-  constructor(params, reconstruct = false) {
+  constructor(params) {
     this.width = params.width;
     this.height = params.height;
 
-    if (reconstruct) {
-      this.fractal = Fractal.reconstruct(params.fractal, FRACTAL_TYPES);
-      this.srcFrame = Frame.reconstruct(params.srcFrame);
-      this.gradient = Gradient.reconstruct(params.gradient);
-    }
-    else {
-      this.fractal = params.fractal.copy();
-      this.srcFrame = params.srcFrame.copy();
-      this.gradient = params.gradient.copy();
-    }
+    this.fractal = params.fractal.copy();
+    this.srcFrame = params.srcFrame.copy();
+    this.gradient = params.gradient.copy();
 
     this.iterSettings = {...params.iterSettings};
 
@@ -69,9 +62,4 @@ class ImageSettings {
   copy() {
     return new ImageSettings(this);
   }
-
-  // Reconstruct serialized object to restore class methods
-  static reconstruct(imageSettings) {
-    return new ImageSettings(imageSettings, true);
-  };
 }

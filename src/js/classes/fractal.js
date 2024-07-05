@@ -14,10 +14,6 @@ class Fractal {
     return new Fractal(this.type, {...this.params});
   }
 
-  static reconstruct(fractal, fractalTypes) {
-    return new Fractal(fractalTypes[fractal.type.id], {...fractal.params});
-  }
-
 
   // Mandelbrot-style iteration wrapper (z0 = 0, c = point)
   static iterateMandelbrot(c, iterFunc, iterSettings, params) {
