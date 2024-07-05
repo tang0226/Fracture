@@ -110,7 +110,6 @@ const controlCanvas = new Canvas({
         let img = currSettings.copy();
         img.setSrcFrame(newSrcFrame);
 
-        cancelRender(true);
         render(img);
       }
 
@@ -125,8 +124,58 @@ const controlCanvas = new Canvas({
 
           settings.srcFrame = settings.frame.copy();
 
-          cancelRender(true);
-          render(settings, true);
+          render(settings);
+        }
+        else if (event.altKey) {
+          let fractalMeta = currSettings.fractal.type.meta;
+          if (fractalMeta.juliaEquivalent) {
+
+            storedSettings = currSettings.copy();
+
+            let c = currSettings.frame.toComplexCoords(
+              this.state.mouseX, this.state.mouseY, this.width, this.height
+            );
+  
+            fractalDropdown.set(fractalMeta.juliaEquivalent);
+            fractalDropdown.state.fractalType = FRACTAL_TYPES[fractalMeta.juliaEquivalent];
+
+            queueDefaultFrame();
+
+            if (fractalMeta.reqExponent) {
+              exponentInput.utils.setClean(currSettings.fractal.params.e);
+            }
+
+            juliaConstInput.showContainer();
+            juliaConstInput.utils.setClean(Complex.toString(c));
+
+            resetInputs();
+
+            renderButton.utils.render();
+          }
+
+          else if (fractalMeta.mandelEquivalent && storedSettings) {
+            queuedFrame = storedSettings.srcFrame;
+
+            fractalDropdown.set(fractalMeta.mandelEquivalent);
+            fractalDropdown.state.fractalType = FRACTAL_TYPES[fractalMeta.mandelEquivalent];
+
+            if (fractalMeta.reqExponent) {
+              exponentInput.utils.setClean(storedSettings.fractal.params.e);
+            }
+
+            juliaConstInput.hideContainer();
+            juliaConstInput.set("");
+            juliaConstInput.isClean = false;
+            juliaConstInput.isUsed = false;
+
+            itersInput.utils.setClean(storedSettings.iterSettings.iters);
+            escapeRadiusInput.utils.setClean(storedSettings.iterSettings.er);
+            itersPerCycleInput.utils.setClean(storedSettings.gradientSettings.itersPerCycle);
+
+            renderButton.utils.render();
+
+            storedSettings = null;
+          }
         }
       }
     },
@@ -162,7 +211,6 @@ const renderButton = new Button({
   },
   utils: {
     render() {
-      if (renderInProgress) return;
       var canRender = true;
 
       // check conditional inputs
@@ -170,8 +218,8 @@ const renderButton = new Button({
         juliaConstAlert.show();
         canRender = false;
       }
-      if (expInput.state.isUsed && !expInput.state.isClean) {
-        expAlert.show();
+      if (exponentInput.state.isUsed && !exponentInput.state.isClean) {
+        exponentAlert.show();
         canRender = false;
       }
 
@@ -186,7 +234,7 @@ const renderButton = new Button({
       if (canRender) {
         let srcFrame;
 
-        // If fractal changed and new frame is queued
+        // If a new frame is queued
         if (queuedFrame) {
           srcFrame = queuedFrame;
           queuedFrame = null;
@@ -200,8 +248,8 @@ const renderButton = new Button({
         if (juliaConstInput.state.c) {
           fracParams.c = juliaConstInput.state.c
         }
-        if (expInput.state.e) {
-          fracParams.e = expInput.state.e;
+        if (exponentInput.state.e) {
+          fracParams.e = exponentInput.state.e;
         }
 
         let settings = {
@@ -270,18 +318,18 @@ const fractalDropdown = new Dropdown({
         juliaConstInput.state.isUsed = false;
       }
       if (this.state.fractalType.meta.reqExponent) {
-        expInput.showContainer();
-        expInput.state.isUsed = true;
+        exponentInput.showContainer();
+        exponentInput.state.isUsed = true;
       }
       else {
-        expInput.hideContainer();
-        expInput.set("");
+        exponentInput.hideContainer();
+        exponentInput.set("");
 
-        expAlert.hide();
+        exponentAlert.hide();
 
-        expInput.state.e = null;
-        expInput.state.isClean = false;
-        expInput.state.isUsed = false;
+        exponentInput.state.e = null;
+        exponentInput.state.isClean = false;
+        exponentInput.state.isUsed = false;
       }
     },
   }
@@ -344,7 +392,7 @@ const juliaConstAlert = new TextElement({
   hide: true,
 });
 
- const expInput = new TextInput({
+ const exponentInput = new TextInput({
   id: "exponent",
   dispStyle: "inline",
   containerId: "exponent-container",
@@ -368,7 +416,7 @@ const juliaConstAlert = new TextElement({
   utils: {
     // Mark self as valid
     clean() {
-      expAlert.hide();
+      exponentAlert.hide();
       this.state.isClean = true;
     },
     
@@ -376,11 +424,11 @@ const juliaConstAlert = new TextElement({
     sanitize() {
       let e = Number(this.element.value);
       if (isNaN(e) || e < 2 || !Number.isInteger(e)) {
-        expAlert.show();
+        exponentAlert.show();
         this.state.isClean = false;
       }
       else {
-        expAlert.hide();
+        exponentAlert.hide();
         this.state.e = e;
         this.state.isClean = true;
       }
@@ -389,12 +437,12 @@ const juliaConstAlert = new TextElement({
     // Set to a verified clean input
     setClean(val) {
       this.element.value = val;
-      this.sanitize();
+      this.utils.sanitize();
     },
   },
 });
 
-const expAlert = new TextElement({
+const exponentAlert = new TextElement({
   id: "exponent-alert",
   innerText: "Exponent must be an integer greater than 1",
   hide: true,
@@ -1077,7 +1125,7 @@ const importSettingsButton = new Button({
 
 
 var currSettings = DEFAULTS.imageSettings.copy(),
-  lastSettings, queuedFrame, renderInProgress, renderWorker, renderProgress, renderTime;
+  lastSettings, storedSettings, queuedFrame, renderInProgress, renderWorker, renderProgress, renderTime;
 
 function pushSettings(newSettings) {
   lastSettings = currSettings.copy();
@@ -1086,7 +1134,11 @@ function pushSettings(newSettings) {
   currSettings = new ImageSettings(newSettings);
 }
 
-function render(imageSettings, _pushSettings = true) {
+function render(imageSettings, _pushSettings = true, cancel = true) {
+  if (cancel) {
+    cancelRender(true);
+  }
+
   if (_pushSettings) {
     pushSettings(imageSettings);
   }
