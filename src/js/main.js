@@ -714,29 +714,27 @@ const gradientControlCanvas = new Canvas({
   },
   eventCallbacks: {
     mouseDown() {
-      if (this.state.mouseY > this.height - SETTINGS.gradientBarHeight) {
-        for (let i = 0; i < this.state.positions.length - 1; i++) {
-          let normX = this.state.mouseX / this.width
-          if (this.state.positions[i] < normX && normX < this.state.positions[i + 1]) {
+      for (let i = 0; i < this.state.positions.length - 1; i++) {
+        let normX = this.state.mouseX / this.width
+        if (this.state.positions[i] < normX && normX < this.state.positions[i + 1]) {
 
-            // deselect if already selected
-            if (this.state.selected == i) {
-              this.state.selected = null;
-              this.utils.draw();
-              colorControlContainer.hide();
-            }
-
-            else {
-              this.state.selected = i;
-              this.utils.draw();
-
-              let col = gradientMainCanvas.state.gradient.points[i].color;
-              colorPreview.utils.setColor(col)
-              colorControlContainer.utils.setSliders(col);
-              colorControlContainer.show();
-            }
-            break;
+          // deselect if already selected
+          if (this.state.selected == i) {
+            this.state.selected = null;
+            this.utils.draw();
+            colorControlContainer.hide();
           }
+
+          else {
+            this.state.selected = i;
+            this.utils.draw();
+
+            let col = gradientMainCanvas.state.gradient.points[i].color;
+            colorPreview.utils.setColor(col)
+            colorControlContainer.utils.setSliders(col);
+            colorControlContainer.show();
+          }
+          break;
         }
       }
     },
