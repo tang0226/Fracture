@@ -15,8 +15,7 @@ const DEFAULTS = {
     tricorn: new Frame(Complex(-0.25, 0), 4, 4)
   },
   gradient: new Gradient(
-    `0 0 0;150 0 0;0 0 0;200 200 0;0 0 0;50 100 50;0 0 0;
-    0 175 175;0 0 0;75 75 150;0 0 0;100 50 150;`
+    `0 0 0; 255 255 255;`
   ),
   itersPerCycle: 200,
 };
@@ -300,6 +299,7 @@ const fractalDropdown = new Dropdown({
       queueDefaultFrame();
       this.utils.updateParameterDisplays();
       resetSensitiveInputs();
+      storedSettings = null;
     },
   },
   utils: {
@@ -355,6 +355,8 @@ const juliaConstInput = new TextInput({
 
       // Prepare new frame based on fractal type
       queueDefaultFrame();
+      
+      storedSettings = null;
     },
   },
   utils: {
@@ -411,6 +413,8 @@ const juliaConstAlert = new TextElement({
 
       // Prepare new frame based on fractal type
       queueDefaultFrame();
+
+      storedSettings = null;
     },
   },
   utils: {
