@@ -633,8 +633,9 @@ const smoothColoringCheckbox = new Checkbox({
   },
 });
 
-const smoothColoringContainer = new Element({
-  id: "smooth-coloring-container",
+const smoothColoringText = new Element({
+  id: "smooth-coloring-text",
+  dispStyle: "inline",
   eventCallbacks: {
     click() {
       let ele = smoothColoringCheckbox.element;
