@@ -1198,10 +1198,6 @@ function resetSensitiveInputs() {
   itersInput.state.iters = DEFAULTS.iters;
   itersInput.utils.clean();
 
-  escapeRadiusInput.set(DEFAULTS.escapeRadius);
-  escapeRadiusInput.state.er = DEFAULTS.escapeRadius;
-  escapeRadiusInput.utils.clean();
-
   itersPerCycleInput.set(DEFAULTS.itersPerCycle);
   itersPerCycleInput.state.ipc = DEFAULTS.itersPerCycle;
   itersPerCycleInput.utils.clean();
