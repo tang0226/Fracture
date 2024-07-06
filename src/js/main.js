@@ -148,7 +148,7 @@ const controlCanvas = new Canvas({
             juliaConstInput.showContainer();
             juliaConstInput.utils.setClean(Complex.toString(c));
 
-            resetInputs();
+            resetSensitiveInputs();
 
             renderButton.utils.render();
           }
@@ -299,7 +299,7 @@ const fractalDropdown = new Dropdown({
       this.state.fractalType = FRACTAL_TYPES[this.element.value];
       queueDefaultFrame();
       this.utils.updateParameterDisplays();
-      resetInputs();
+      resetSensitiveInputs();
     },
   },
   utils: {
@@ -351,7 +351,7 @@ const juliaConstInput = new TextInput({
   eventCallbacks: {
     change() {
       this.utils.sanitize();
-      resetInputs();
+      resetSensitiveInputs();
 
       // Prepare new frame based on fractal type
       queueDefaultFrame();
@@ -407,7 +407,7 @@ const juliaConstAlert = new TextElement({
   eventCallbacks: {
     change() {
       this.utils.sanitize();
-      resetInputs();
+      resetSensitiveInputs();
 
       // Prepare new frame based on fractal type
       queueDefaultFrame();
@@ -646,7 +646,7 @@ const resetButton = new Button({
     click() {
       // Reset frame, reset iters, er, etc. then render
       queueDefaultFrame();
-      resetInputs();
+      resetSensitiveInputs();
       renderButton.utils.render();
     },
   }
@@ -1191,8 +1191,9 @@ function queueDefaultFrame() {
 }
 
 
-// Set inputs to defaults
-function resetInputs() {
+// Set inputs such as iterations and ipc to defaults
+// (these are heavily dependent on zoom, and must be reset when the zoom and frame are changed)
+function resetSensitiveInputs() {
   itersInput.set(DEFAULTS.iters);
   itersInput.state.iters = DEFAULTS.iters;
   itersInput.utils.clean();
