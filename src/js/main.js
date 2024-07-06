@@ -4,7 +4,7 @@ const SETTINGS = {
 };
 
 const DEFAULTS = {
-  iters: 100,
+  iters: 1000,
   escapeRadius: 256,
   smoothColoring: true,
 
@@ -18,7 +18,7 @@ const DEFAULTS = {
     `0 0 0;150 0 0;0 0 0;200 200 0;0 0 0;50 100 50;0 0 0;
     0 175 175;0 0 0;75 75 150;0 0 0;100 50 150;`
   ),
-  itersPerCycle: 100,
+  itersPerCycle: 200,
 };
 
 DEFAULTS.imageSettings = new ImageSettings({
