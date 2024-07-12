@@ -10,11 +10,6 @@
     <canvas id="control-canvas" class="control-canvas"></canvas>  
 
     <section id="toolbar">
-      <div id="mouse-coords-container" class="ui-block">
-        Mouse coordinates: <div id="mouse-complex-coords" class="inline"></div>
-      </div>
-
-      
       <div id="progress-container" class="ui-block">
         Progress: <div id="progress" class="inline"></div>
       </div>
@@ -26,8 +21,6 @@
       <div id="render-time-container" class="ui-block">
         Render time: <span id="render-time" class="inline"></span>
       </div>
-
-      <hr>
 
       <div class="ui-block">
         <input id="render" type="button" value="Render"/>
@@ -42,8 +35,6 @@
           </select>
         </div>
       </div>
-
-      <hr>
 
       <div id="fractal-select-container" class="ui-block">
         Fractal:
@@ -74,8 +65,6 @@
         <input type="text" id="julia-constant" class="inline"/>
         <div id="julia-constant-alert" class="alert"></div>
       </div>
-
-      <hr>
 
       <input id="increase-iterations" type="button" value="+" class="ui-block"/>
 
@@ -113,8 +102,6 @@
       <div id="smooth-coloring-container" class="ui-block">
         <input type="checkbox" id="smooth-coloring"/> <span id="smooth-coloring-text">Smooth coloring</span>
       </div>
-
-      <hr>
 
       <div class="ui-block">Gradient:</div>
 
@@ -157,28 +144,7 @@
         <div id="ipc-increment-alert" class="alert"></div>
       </div>
 
-      <hr>
-
-      <div id="canvas-width-container" class="ui-block">
-        Width (px):
-        <input type="text" id="canvas-width"/>
-        <div id="canvas-width-alert" class="alert"></div>
-      </div>
-
-      <div id="canvas-height-container" class="ui-block">
-        Height (px):
-        <input type="text" id="canvas-height"/>
-        <div id="canvas-height-alert" class="alert"></div>
-      </div>
-
       <input id="resize" type="button" value="Resize" class="ui-block"/>
-
-      <hr>
-
-      <div class="ui-block">
-        <textarea id="settings-json" cols="50" rows="6"></textarea>
-        <input id="import-settings" type="button" value="Import"/>
-      </div>
 
     </section>
 

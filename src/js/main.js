@@ -1112,21 +1112,6 @@ const resizeButton = new Button({
   },
 });
 
-const settingsJsonInput = new TextInput({
-  id: "settings-json",
-});
-
-const importSettingsButton = new Button({
-  id: "import-settings",
-  eventCallbacks: {
-    click() {
-      let str = settingsJsonInput.element.value;
-      let obj = JSON.parse(str);
-      render(obj);
-    },
-  },
-});
-
 
 
 var currSettings = DEFAULTS.imageSettings.copy(),
