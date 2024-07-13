@@ -39,7 +39,7 @@ hr {
   margin-bottom: 10px;
 }
 
-.ui-block, .ui-block :is(div, span, input, select) {
+body *:not(textarea) {
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -49,9 +49,15 @@ hr {
 }
 
 .toolbar-header {
+  margin-top: 15px;
+  padding: 5px 0px 5px 0px;
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
   width: inherit;
+}
+
+.toolbar-header span {
+  margin-left: 10px;
 }
 
 .control-canvas {
