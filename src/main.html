@@ -10,23 +10,26 @@
     <canvas id="control-canvas" class="control-canvas"></canvas>  
 
     <section id="toolbar">
-      <div id="progress-container" class="ui-block">
-        Progress: <div id="progress" class="inline"></div>
-      </div>
-
-      <div id="progress-bar-container" class="ui-block">
-        <progress id="progress-bar" max="100"></progress>
-      </div>
-
-      <div id="render-time-container" class="ui-block">
-        Render time: <span id="render-time" class="inline"></span>
-      </div>
-
-      <div class="ui-block">
-        <input id="render" type="button" value="Render"/>
-        <input id="cancel" type="button" value="Cancel"/>
-
-        <div id="download-container" class="right no-margin">
+      <div id="utils-container" class="ui-block">
+        <div class="toolbar-header">Utilities:</div>
+        <div id="progress-container" class="ui-block">
+          Progress: <span id="progress"></span>
+        </div>
+  
+        <div id="progress-bar-container" class="ui-block">
+          <progress id="progress-bar" max="100"></progress>
+        </div>
+  
+        <div id="render-time-container" class="ui-block">
+          Render time: <span id="render-time" class="inline"></span>
+        </div>
+  
+        <div class="ui-block">
+          <input id="render" type="button" value="Render"/>
+          <input id="cancel" type="button" value="Cancel"/>
+        </div>
+  
+        <div id="download-container" class="ui-block">
           <input type="button" value="Download"/>
           
           <select id="download-type">
@@ -34,117 +37,127 @@
             <option value="jpeg">JPEG</option>
           </select>
         </div>
+  
       </div>
 
-      <div id="fractal-select-container" class="ui-block">
-        Fractal:
-        <select id="fractal-type" class="inline">
-          <option value="mandelbrot">Mandelbrot set</option>
-          <option value="julia">Julia set</option>
-          <option value="multibrot">Multibrot set</option>
-          <option value="multijulia">Multijulia set</option>
-          <option value="burningShip">Burning Ship fractal</option>
-          <option value="burningShipJulia">Burning Ship Julia set</option>
-          <option value="multiship">Multiship fractal</option>
-          <option value="multishipJulia">Multiship Julia set</option>
-          <option value="tricorn">Tricorn</option>
-          <option value="tricornJulia">Tricorn Julia</option>
-          <option value="multicorn">Multicorn</option>
-          <option value="multicornJulia">Multicorn Julia</option>
-        </select>
-      </div>
+      <div id="fractal-inputs-container" class="ui-block">
+        <div class="toolbar-header">Fractal:</div>
 
-      <div id="exponent-container" class="ui-block">
-        Exponent:
-        <input type="text" id="exponent" class="inline"/>
-        <div id="exponent-alert" class="alert"></div>
-      </div>
-
-      <div id="julia-constant-container" class="ui-block">
-        Julia constant:
-        <input type="text" id="julia-constant" class="inline"/>
-        <div id="julia-constant-alert" class="alert"></div>
-      </div>
-
-      <input id="increase-iterations" type="button" value="+" class="ui-block"/>
-
-      <div id="iterations-container" class="ui-block">
-        Iterations:
-        <input type="text" id="iterations" class="inline"/>
-        <div id="iterations-alert" class="alert"></div>
-      </div>
-
-      <input id="decrease-iterations" type="button" value="-" class="ui-block"/>
-
-      <div class="ui-block">
-        Increment:
-        <input id="iteration-increment" type="text" class="inline"/>
-        <div id="iteration-increment-alert" class="alert"></div>
-      </div>
-
-      <div id="escape-radius-container" class="ui-block">
-        Escape radius:
-        <input type="text" id="escape-radius" class="inline"/>
-        <div id="escape-radius-alert" class="alert"></div>
-      </div>
-
-      <div id="zoom-container" class="ui-block">
-        Zoom: <div id="zoom" class="inline"></div>
-        <input id="reset" type="button" class="inline" value="Reset"/>
-      </div>
-
-      <div class="ui-block">
-        Click zoom factor:
-        <input id="click-zoom-factor"/>
-        <div id="click-zoom-factor-alert" class="alert"></div>
-      </div>
-
-      <div id="smooth-coloring-container" class="ui-block">
-        <input type="checkbox" id="smooth-coloring"/> <span id="smooth-coloring-text">Smooth coloring</span>
-      </div>
-
-      <div class="ui-block">Gradient:</div>
-
-      <div id="gradient-canvas-container" class="canvas-container ui-block">
-        <canvas id="gradient-main-canvas" class="double-canvas border"></canvas>
-        <canvas id="gradient-control-canvas" class="control-canvas double-canvas border"></canvas>
-      </div>
-
-      <div id="color-control-container" class="ui-block">
-        <div id="color-preview"></div>
-        <div id="rgb-container">
-          R<input id="color-r" type="range" min="0" max="255"/><br/>
-          G<input id="color-g" type="range" min="0" max="255"/><br/>
-          B<input id="color-b" type="range" min="0" max="255"/>
+        <div id="fractal-select-container" class="ui-block">
+          Type:
+          <select id="fractal-type" class="inline">
+            <option value="mandelbrot">Mandelbrot set</option>
+            <option value="julia">Julia set</option>
+            <option value="multibrot">Multibrot set</option>
+            <option value="multijulia">Multijulia set</option>
+            <option value="burningShip">Burning Ship fractal</option>
+            <option value="burningShipJulia">Burning Ship Julia set</option>
+            <option value="multiship">Multiship fractal</option>
+            <option value="multishipJulia">Multiship Julia set</option>
+            <option value="tricorn">Tricorn</option>
+            <option value="tricornJulia">Tricorn Julia</option>
+            <option value="multicorn">Multicorn</option>
+            <option value="multicornJulia">Multicorn Julia</option>
+          </select>
         </div>
-        <br>
-        <input id="insert-color-left" type="button" value="+"/>
-        <input id="insert-color-right" type="button" value="+"/>
-        <input id="delete-color" type="button" value="X"/>
+  
+        <div id="exponent-container" class="ui-block">
+          Exponent:
+          <input type="text" id="exponent" class="inline"/>
+          <div id="exponent-alert" class="alert"></div>
+        </div>
+  
+        <div id="julia-constant-container" class="ui-block">
+          Julia constant:
+          <input type="text" id="julia-constant" class="inline"/>
+          <div id="julia-constant-alert" class="alert"></div>
+        </div>
+    
       </div>
 
-      <div id="gradient-container" class="ui-block">
-        <textarea id="gradient" cols="40" rows="5"></textarea>
-        <div id="gradient-alert" class="alert"></div>
+      <div id="iter-settings-section" class="ui-block">
+        <div class="toolbar-header">Iteration settings:</div>
+        <div id="iter-settings-toolbar">
+          <div id="iterations-toolbar-container">
+            <input id="increase-iterations" type="button" value="+" class="ui-block"/>
+    
+            <div id="iterations-container" class="ui-block">
+              Iterations:
+              <input type="text" id="iterations" class="inline"/>
+              <div id="iterations-alert" class="alert"></div>
+            </div>
+      
+            <input id="decrease-iterations" type="button" value="-" class="ui-block"/>  
+          </div>
+    
+          <div class="ui-block">
+            Increment:
+            <input id="iteration-increment" type="text" class="inline"/>
+            <div id="iteration-increment-alert" class="alert"></div>
+          </div>
+    
+          <div id="escape-radius-container" class="ui-block">
+            Escape radius:
+            <input type="text" id="escape-radius" class="inline"/>
+            <div id="escape-radius-alert" class="alert"></div>
+          </div>
+  
+          <div id="smooth-coloring-container" class="ui-block">
+            <input type="checkbox" id="smooth-coloring"/> <span id="smooth-coloring-text">Smooth coloring</span>
+          </div>
+
+          <div class="ui-block">
+            <input id="reset" type="button" class="inline" value="Reset zoom"/>
+          </div>
+        </div>
       </div>
 
-      <input id="increase-ipc" type="button" value="+" class="ui-block"/>
-
-      <div id="ipc-container" class="ui-block">
-        Iterations per cycle:
-        <input type="text" id="iters-per-cycle"/>
-        <div id="ipc-alert" class="alert"></div>
+      <div id="gradient-settings-section" class="ui-block">
+        <div class="toolbar-header">Gradient:</div>
+        
+        <div id="gradient-canvas-container" class="canvas-container ui-block">
+          <canvas id="gradient-main-canvas" class="double-canvas border"></canvas>
+          <canvas id="gradient-control-canvas" class="control-canvas double-canvas border"></canvas>
+        </div>
+  
+        <div id="color-control-container" class="ui-block">
+          <div id="color-preview"></div>
+          <div id="rgb-container">
+            R<input id="color-r" type="range" min="0" max="255"/><br/>
+            G<input id="color-g" type="range" min="0" max="255"/><br/>
+            B<input id="color-b" type="range" min="0" max="255"/>
+          </div>
+          <br>
+          <input id="insert-color-left" type="button" value="+"/>
+          <input id="insert-color-right" type="button" value="+"/>
+          <input id="delete-color" type="button" value="X"/>
+        </div>
+  
+        <div id="gradient-container" class="ui-block">
+          <textarea id="gradient" cols="40" rows="5"></textarea>
+          <div id="gradient-alert" class="alert"></div>
+        </div>
+  
+        <input id="increase-ipc" type="button" value="+" class="ui-block"/>
+  
+        <div id="ipc-container" class="ui-block">
+          Iterations per cycle:
+          <input type="text" id="iters-per-cycle"/>
+          <div id="ipc-alert" class="alert"></div>
+        </div>
+  
+        <input id="decrease-ipc" type="button" value="-" class="ui-block"/>
+  
+        <div class="ui-block">
+          Increment:
+          <input id="ipc-increment" type="text" class="inline"/>
+          <div id="ipc-increment-alert" class="alert"></div>
+        </div>
+  
+        <div class="ui-block">
+          <input id="resize" type="button" value="Resize" class="ui-block"/>
+        </div>
       </div>
-
-      <input id="decrease-ipc" type="button" value="-" class="ui-block"/>
-
-      <div class="ui-block">
-        Increment:
-        <input id="ipc-increment" type="text" class="inline"/>
-        <div id="ipc-increment-alert" class="alert"></div>
-      </div>
-
-      <input id="resize" type="button" value="Resize" class="ui-block"/>
 
     </section>
 

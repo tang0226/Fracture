@@ -39,13 +39,19 @@ hr {
   margin-bottom: 10px;
 }
 
-div, input, select {
+.ui-block, .ui-block :is(div, span, input, select) {
   font-size: 16px;
-  font-family: "Arial";
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .ui-block {
   margin: 5px 0px 5px 15px;
+}
+
+.toolbar-header {
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  width: inherit;
 }
 
 .control-canvas {
@@ -75,20 +81,4 @@ div, input, select {
 
 .alert {
   color: red;
-}
-
-.center {
-  float: center;
-}
-
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
-}
-
-.no-margin {
-  margin: 0px !important;
 }
