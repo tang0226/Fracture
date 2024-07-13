@@ -456,9 +456,9 @@ const itersInput = new TextInput({
   id: "iterations",
   dispStyle: "inline",
   containerId: "iterations-container",
-  value: 100,
+  value: DEFAULTS.iters,
   state: {
-    iters: 100,
+    iters: DEFAULTS.iters,
     isClean: true,
     isUsed: true,
   },
@@ -580,9 +580,9 @@ const escapeRadiusInput = new TextInput({
   id: "escape-radius",
   containerId: "escape-radius-container",
   dispStyle: "inline",
-  value: 256,
+  value: DEFAULTS.escapeRadius,
   state: {
-    er: 256,
+    er: DEFAULTS.escapeRadius,
     isClean: true,
     isUsed: true,
   },
